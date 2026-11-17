@@ -2,6 +2,9 @@ package com.carmatch.controller;
 
 import com.carmatch.model.Car;
 import com.carmatch.service.CarService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,13 +21,13 @@ public class CarController {
     }
 
     @GetMapping("/cars")
-    public List<Car> cars() {
-        return this.carService.getAllCars();
+    public ResponseEntity<List<Car>> cars() {
+        return ResponseEntity.ok(this.carService.getAllCars());
     }
 
     @PostMapping("/cars")
-    public Car insertCar(@RequestBody Car car) {
-        return this.carService.saveCar(car);
+    public ResponseEntity<Car> insertCar(@Valid @RequestBody Car car) {
+        return new ResponseEntity<>(this.carService.saveCar(car), HttpStatus.CREATED);
     }
 
 }
