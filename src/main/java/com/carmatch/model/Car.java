@@ -13,7 +13,7 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank
+    @NotBlank(message = "La marque est obligatoire")
     private String brand;
     @NotBlank
     private String model;
