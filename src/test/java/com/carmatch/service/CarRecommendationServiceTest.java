@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -139,6 +140,33 @@ class CarRecommendationServiceTest {
             int score = carRecommendationService.calculateCompatibilityScore(car, request);
 
             assertEquals(75, score);
+        }
+    }
+
+    @Nested
+    class RankCarsTests {
+
+        @Test
+        void shouldReturnCarsInDescendingOrderOfCompatibilityScore() {
+            Car car1 = new Car("Honda", "Honda Jazz", new BigDecimal("9990"), FuelType.HYBRID, BodyStyle.HATCHBACK, 5, 300);
+            Car car2 = new Car("Kia", "e-Niro", new BigDecimal("19990"), FuelType.ELECTRIC, BodyStyle.CROSSOVER, 5, 451);
+            CarSearchRequest request = new CarSearchRequest(null, Set.of(TripType.CITY), null, null, null, BodyStyle.HATCHBACK);
+
+            var res = carRecommendationService.rankCars(List.of(car2, car1), request);
+
+            assertEquals("Honda Jazz", res.get(0).car().getModel());
+            assertEquals(100, res.get(0).compatibilityScore());
+            assertEquals("e-Niro", res.get(1).car().getModel());
+            assertEquals(78, res.get(1).compatibilityScore());
+        }
+
+        @Test
+        void shouldReturnEmptyListWhenNoEligibleCars() {
+            CarSearchRequest request = new CarSearchRequest(null, null, null, null, null, null);
+
+            var res = carRecommendationService.rankCars(List.of(), request);
+
+            assertTrue(res.isEmpty());
         }
     }
 }

@@ -1,9 +1,11 @@
 package com.carmatch.service;
 
+import com.carmatch.dto.CarRecommendation;
 import com.carmatch.dto.CarSearchRequest;
 import com.carmatch.model.Car;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -53,5 +55,14 @@ public class CarRecommendationService {
         }
 
         return nbCompatibilityCriteria == 0 ? 100 : (int) Math.round((double) sumCompatibilityScores / nbCompatibilityCriteria);
+    }
+
+    public List<CarRecommendation> rankCars(
+            List<Car> eligibleCars,
+            CarSearchRequest request) {
+        return eligibleCars.stream()
+                .map(car -> new CarRecommendation(car, calculateCompatibilityScore(car, request)))
+                .sorted(Comparator.comparingInt(CarRecommendation::compatibilityScore).reversed())
+                .toList();
     }
 }
