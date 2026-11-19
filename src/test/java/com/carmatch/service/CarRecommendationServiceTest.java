@@ -4,6 +4,7 @@ import com.carmatch.dto.CarSearchRequest;
 import com.carmatch.model.Car;
 import com.carmatch.model.enums.BodyStyle;
 import com.carmatch.model.enums.FuelType;
+import com.carmatch.model.enums.TripType;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -84,6 +86,59 @@ class CarRecommendationServiceTest {
             var res = carRecommendationService.findEligibleCars(request);
 
             assertTrue(res.isEmpty());
+        }
+    }
+
+    @Nested
+    class CompatibilityScoreTests {
+        @Test
+        void shouldReturn100WhenNoPreferenceSpecified() {
+            Car car = new Car("Kia", "e-Niro", new BigDecimal("19990"), FuelType.ELECTRIC, BodyStyle.CROSSOVER, 5, 451);
+            CarSearchRequest request = new CarSearchRequest(null, null, null, null, null, null);
+
+            int score = carRecommendationService.calculateCompatibilityScore(car, request);
+
+            assertEquals(100, score);
+        }
+
+        @Test
+        void shouldReturn80WhenOnlyTripTypesSpecified() {
+            Car car = new Car("Honda", "Honda Jazz", new BigDecimal("9990"), FuelType.HYBRID, BodyStyle.HATCHBACK, 5, 300);
+            CarSearchRequest request = new CarSearchRequest(null, Set.of(TripType.CITY, TripType.HIGHWAY), null, null, null, null);
+
+            int score = carRecommendationService.calculateCompatibilityScore(car, request);
+
+            assertEquals(80, score);
+        }
+
+        @Test
+        void shouldReturn70WhenTargetBodyStyleDoesNotMatch() {
+            Car car = new Car("Honda", "Honda Jazz", new BigDecimal("9990"), FuelType.HYBRID, BodyStyle.HATCHBACK, 5, 300);
+            CarSearchRequest request = new CarSearchRequest(null, null, null, null, null, BodyStyle.SUV);
+
+            int score = carRecommendationService.calculateCompatibilityScore(car, request);
+
+            assertEquals(70, score);
+        }
+
+        @Test
+        void shouldReturn100WhenTargetBodyStyleMatches() {
+            Car car = new Car("Honda", "Honda Jazz", new BigDecimal("9990"), FuelType.HYBRID, BodyStyle.HATCHBACK, 5, 300);
+            CarSearchRequest request = new CarSearchRequest(null, null, null, null, null, BodyStyle.HATCHBACK);
+
+            int score = carRecommendationService.calculateCompatibilityScore(car, request);
+
+            assertEquals(100, score);
+        }
+
+        @Test
+        void shouldReturn75WhenTargetBodyStyleDoesNotMatchAndTripTypesSpecified() {
+            Car car = new Car("Honda", "Honda Jazz", new BigDecimal("9990"), FuelType.HYBRID, BodyStyle.HATCHBACK, 5, 300);
+            CarSearchRequest request = new CarSearchRequest(null, Set.of(TripType.CITY, TripType.HIGHWAY), null, null, null, BodyStyle.SUV);
+
+            int score = carRecommendationService.calculateCompatibilityScore(car, request);
+
+            assertEquals(75, score);
         }
     }
 }

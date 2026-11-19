@@ -39,4 +39,19 @@ public class CarRecommendationService {
 
         return eligibleCars;
     }
+
+    int calculateCompatibilityScore(Car car, CarSearchRequest request) {
+        int nbCompatibilityCriteria = 0;
+        int sumCompatibilityScores = 0;
+        if (request.tripTypes() != null && !request.tripTypes().isEmpty()) {
+            nbCompatibilityCriteria++;
+            sumCompatibilityScores += TripCompatibility.getAverageScore(car.getBodyStyle(), request.tripTypes());
+        }
+        if (request.bodyStyle() != null) {
+            nbCompatibilityCriteria++;
+            sumCompatibilityScores += BodyStyleCompatibility.getBodyStyleScore(car.getBodyStyle(), request.bodyStyle());
+        }
+
+        return nbCompatibilityCriteria == 0 ? 100 : (int) Math.round((double) sumCompatibilityScores / nbCompatibilityCriteria);
+    }
 }
