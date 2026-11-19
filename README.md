@@ -25,7 +25,7 @@ Les critères de budget, carburant, nombre de places et capacité du coffre sont
 
 | Technologie        | Utilisation                               |
 | ------------------ | ----------------------------------------- |
-| Java 21            | Langage de programmation                  |
+| Java 25            | Langage de programmation                  |
 | Spring Boot 4      | Framework applicatif                      |
 | Spring Web MVC     | Création de l'API REST                    |
 | Spring Data JPA    | Accès aux données                         |
@@ -63,7 +63,7 @@ Database (H2)
 
 ### Prérequis
 
-- Java 21 ou version compatible.
+- Java 25 ou version compatible.
 - Maven (ou le Maven Wrapper fourni avec le projet).
 - Git.
 
