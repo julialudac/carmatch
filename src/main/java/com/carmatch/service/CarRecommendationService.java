@@ -16,7 +16,12 @@ public class CarRecommendationService {
         this.carService = carService;
     }
 
-    public List<Car> findEligibleCars(CarSearchRequest request) {
+    public List<CarRecommendation> recommendCars(CarSearchRequest request) {
+        var eligibleCars = findEligibleCars(request);
+        return rankCars(eligibleCars, request);
+    }
+
+    List<Car> findEligibleCars(CarSearchRequest request) {
         var eligibleCars = carService.getAllCars();
 
         // budget criterion
@@ -57,7 +62,7 @@ public class CarRecommendationService {
         return nbCompatibilityCriteria == 0 ? 100 : (int) Math.round((double) sumCompatibilityScores / nbCompatibilityCriteria);
     }
 
-    public List<CarRecommendation> rankCars(
+    List<CarRecommendation> rankCars(
             List<Car> eligibleCars,
             CarSearchRequest request) {
         return eligibleCars.stream()

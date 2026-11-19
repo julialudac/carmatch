@@ -169,4 +169,21 @@ class CarRecommendationServiceTest {
             assertTrue(res.isEmpty());
         }
     }
+
+    @Nested
+    class RecommendCarsTests {
+        @Test
+        void shouldFilterOutCarsThatDoNotMeetTheCriteria() {
+            Car car1 = new Car("Honda", "Honda Jazz", new BigDecimal("9990"), FuelType.HYBRID, BodyStyle.HATCHBACK, 5, 300);
+            Car car2 = new Car("Kia", "e-Niro", new BigDecimal("19990"), FuelType.ELECTRIC, BodyStyle.CROSSOVER, 5, 451);
+            CarSearchRequest request = new CarSearchRequest(new BigDecimal("15000"), null, null, null, null, null);
+
+            when(carService.getAllCars()).thenReturn(List.of(car1, car2));
+            var res = carRecommendationService.recommendCars(request);
+
+            assertEquals(1, res.size());
+            assertEquals("Honda Jazz", res.getFirst().car().getModel());
+            assertEquals(100, res.getFirst().compatibilityScore());
+        }
+    }
 }

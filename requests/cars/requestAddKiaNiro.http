@@ -1,0 +1,13 @@
+### Recommandations de voitures
+POST http://localhost:8080/cars
+Content-Type: application/json
+
+{
+  "brand": "Kia",
+  "model": "e-Niro",
+  "price": 19990,
+  "fuelType": "ELECTRIC",
+  "bodyStyle": "CROSSOVER",
+  "seats": 5,
+  "trunkCapacity": 451
+}

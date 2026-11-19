@@ -1,0 +1,12 @@
+### Recommandations de voitures
+POST http://localhost:8080/cars/recommendations
+Content-Type: application/json
+
+{
+  "maxBudget": 20000,
+  "tripTypes": ["CITY", "HIGHWAY"],
+  "fuelType": "ELECTRIC",
+  "passengers": 4,
+  "minTrunkCapacity": 400,
+  "bodyStyle": "CROSSOVER"
+}

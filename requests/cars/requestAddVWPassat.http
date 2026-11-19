@@ -1,0 +1,13 @@
+### Recommandations de voitures
+POST http://localhost:8080/cars
+Content-Type: application/json
+
+{
+  "brand": "Volkswagen",
+  "model": "Passat",
+  "price": 16990,
+  "fuelType": "DIESEL",
+  "bodyStyle": "WAGON",
+  "seats": 5,
+  "trunkCapacity": 650
+}
