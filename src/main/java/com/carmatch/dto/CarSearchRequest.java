@@ -1,5 +1,8 @@
 package com.carmatch.dto;
 
+import com.carmatch.model.enums.BodyStyle;
+import com.carmatch.model.enums.FuelType;
+import com.carmatch.model.enums.TripType;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
@@ -11,11 +14,8 @@ import java.util.Set;
 public record CarSearchRequest(
         @Positive
         BigDecimal maxBudget,
-        @PositiveOrZero
-        Integer annualMileage,
         Set<TripType> tripTypes,
         FuelType fuelType,
-        Boolean homeCharging,
         @Min(1) @Max(9)
         Integer passengers,
         @PositiveOrZero
