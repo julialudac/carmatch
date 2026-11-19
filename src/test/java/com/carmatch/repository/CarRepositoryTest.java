@@ -1,6 +1,8 @@
 package com.carmatch.repository;
 
 import com.carmatch.model.Car;
+import com.carmatch.model.enums.BodyStyle;
+import com.carmatch.model.enums.FuelType;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
@@ -24,7 +26,7 @@ class CarRepositoryTest {
 
     @Test
     void shouldSaveCar() {
-        Car car = new Car("Kia", "e-Niro", new BigDecimal("19990"));
+        Car car = new Car("Kia", "e-Niro", new BigDecimal("19990"), FuelType.ELECTRIC, BodyStyle.CROSSOVER, 5, 451);
 
         Car savedCar = carRepository.save(car);
 
@@ -33,8 +35,8 @@ class CarRepositoryTest {
 
     @Test
     void shouldFindAllCars() {
-        Car car1 = new Car("Kia", "e-Niro", new BigDecimal("19990"));
-        Car car2 = new Car("MG", "MG5", new BigDecimal("16490"));
+        Car car1 = new Car("Kia", "e-Niro", new BigDecimal("19990"), FuelType.ELECTRIC, BodyStyle.CROSSOVER, 5, 451);
+        Car car2 = new Car("MG", "MG5", new BigDecimal("16490"), FuelType.ELECTRIC, BodyStyle.HATCHBACK, 5, 479);
 
         carRepository.save(car1);
         carRepository.save(car2);
@@ -53,7 +55,7 @@ class CarRepositoryTest {
 
     @Test
     void shouldRetrieveAddedCarById() {
-        Car car = new Car("Kia", "e-Niro", new BigDecimal(19990));
+        Car car = new Car("Kia", "e-Niro", new BigDecimal(19990), FuelType.ELECTRIC, BodyStyle.CROSSOVER, 5, 451);
 
         var savedCar = carRepository.save(car);
         Optional<Car> retrievedCar = carRepository.findById(savedCar.getId());

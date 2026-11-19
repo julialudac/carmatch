@@ -1,6 +1,8 @@
 package com.carmatch.service;
 
 import com.carmatch.model.Car;
+import com.carmatch.model.enums.BodyStyle;
+import com.carmatch.model.enums.FuelType;
 import com.carmatch.repository.CarRepository;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +33,7 @@ class CarServiceTest {
 
     @Test
     void shouldCallRepositoryAndReturnCar() {
-        Car car = new Car("Kia", "e-Niro", new BigDecimal(19990));
+        Car car = new Car("Kia", "e-Niro", new BigDecimal(19990), FuelType.ELECTRIC, BodyStyle.CROSSOVER, 5, 451);
         when(carRepository.save(car)).thenReturn(car);
         Car carRes = carService.saveCar(car);
 
@@ -41,8 +43,8 @@ class CarServiceTest {
 
     @Test
     void shouldReturnAllCars() {
-        Car car1 = new Car("Kia", "e-Niro", new BigDecimal(19990));
-        Car car2 = new Car("MG", "MG5", new BigDecimal(16490));
+        Car car1 = new Car("Kia", "e-Niro", new BigDecimal(19990), FuelType.ELECTRIC, BodyStyle.CROSSOVER, 5, 451);
+        Car car2 = new Car("MG", "MG5", new BigDecimal(16490), FuelType.ELECTRIC, BodyStyle.HATCHBACK, 5, 479);
         var cars = List.of(car1, car2);
 
         when(carRepository.findAll()).thenReturn(cars);

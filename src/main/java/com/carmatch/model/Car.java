@@ -43,13 +43,6 @@ public class Car {
     protected Car() {
     }
 
-    // TODO remove when tests are adapted
-    public Car(String brand, String model, BigDecimal price) {
-        this.brand = brand;
-        this.model = model;
-        this.price = price;
-    }
-
     public Car(String brand, String model, BigDecimal price, FuelType fuelType, BodyStyle bodyStyle, Integer seats, Integer trunkCapacity) {
         this.brand = brand;
         this.model = model;
